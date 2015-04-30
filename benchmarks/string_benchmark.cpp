@@ -121,3 +121,25 @@ void BM_string_strlen::Run(int iters, int nbytes) {
   SetBenchmarkBytesProcessed(uint64_t(iters) * uint64_t(nbytes));
   delete[] s;
 }
+BENCHMARK(BM_string_strchr)->AT_COMMON_SIZES;
+
+static void BM_string_strrchr(int iters, int nbytes) {
+  StopBenchmarkTiming();
+  char* s = new char[nbytes];
+  memset(s, 'x', nbytes);
+  s[nbytes - 1] = 0;
+  StartBenchmarkTiming();
+
+  volatile char* c = new char[1];
+  volatile int d __attribute__((unused)) = 0;
+  for (int i = 0; i < iters; ++i) {
+    c = strrchr(s, 'y');
+    if (c != NULL)
+        d += (int)c[0];
+  }
+
+  StopBenchmarkTiming();
+  SetBenchmarkBytesProcessed(int64_t(iters) * int64_t(nbytes));
+  delete[] s;
+}
+BENCHMARK(BM_string_strrchr)->AT_COMMON_SIZES;
