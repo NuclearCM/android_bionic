@@ -143,3 +143,87 @@ static void BM_string_strrchr(int iters, int nbytes) {
   delete[] s;
 }
 BENCHMARK(BM_string_strrchr)->AT_COMMON_SIZES;
+
+static void BM_string_strcmp(int iters, int nbytes) {
+  StopBenchmarkTiming();
+  char* src = new char[nbytes]; char* dst = new char[nbytes];
+  memset(src, 'x', nbytes);
+  memset(dst, 'x', nbytes);
+  src[nbytes - 1] = 0;
+  dst[nbytes - 1] = 0;
+  StartBenchmarkTiming();
+
+  volatile int c __attribute__((unused)) = 0;
+  for (int i = 0; i < iters; ++i) {
+    c += strcmp(dst, src);
+  }
+
+  StopBenchmarkTiming();
+  SetBenchmarkBytesProcessed(int64_t(iters) * int64_t(nbytes));
+  delete[] src;
+  delete[] dst;
+}
+BENCHMARK(BM_string_strcmp)->AT_COMMON_SIZES;
+
+static void BM_string_strncmp(int iters, int nbytes) {
+  StopBenchmarkTiming();
+  char* src = new char[nbytes]; char* dst = new char[nbytes];
+  memset(src, 'x', nbytes);
+  memset(dst, 'x', nbytes);
+  src[nbytes - 1] = 0;
+  dst[nbytes - 1] = 0;
+  StartBenchmarkTiming();
+
+  volatile int c __attribute__((unused)) = 0;
+  for (int i = 0; i < iters; ++i) {
+    c += strncmp(dst, src, nbytes - 1);
+  }
+
+  StopBenchmarkTiming();
+  SetBenchmarkBytesProcessed(int64_t(iters) * int64_t(nbytes));
+  delete[] src;
+  delete[] dst;
+}
+BENCHMARK(BM_string_strncmp)->AT_COMMON_SIZES;
+
+static void BM_string_memchr(int iters, int nbytes) {
+  StopBenchmarkTiming();
+  char* s = new char[nbytes];
+  memset(s, 'x', nbytes);
+  s[nbytes - 1] = 0;
+  StartBenchmarkTiming();
+
+  volatile void* c __attribute__((unused)) = NULL;
+  volatile int d __attribute__((unused)) = 0;
+  for (int i = 0; i < iters; ++i) {
+    c = memchr(s, 'y', nbytes - 1);
+    if (c != NULL)
+        d += (int)c;
+  }
+
+  StopBenchmarkTiming();
+  SetBenchmarkBytesProcessed(int64_t(iters) * int64_t(nbytes));
+  delete[] s;
+}
+BENCHMARK(BM_string_memchr)->AT_COMMON_SIZES;
+
+static void BM_string_memrchr(int iters, int nbytes) {
+  StopBenchmarkTiming();
+  char* s = new char[nbytes];
+  memset(s, 'x', nbytes);
+  s[nbytes - 1] = 0;
+  StartBenchmarkTiming();
+
+  volatile void* c __attribute__((unused)) = NULL;
+  volatile int d __attribute__((unused)) = 0;
+  for (int i = 0; i < iters; ++i) {
+    c = memrchr(s, 'y', nbytes - 1);
+    if (c != NULL)
+        d += (int)c;
+  }
+
+  StopBenchmarkTiming();
+  SetBenchmarkBytesProcessed(int64_t(iters) * int64_t(nbytes));
+  delete[] s;
+}
+BENCHMARK(BM_string_memrchr)->AT_COMMON_SIZES;
