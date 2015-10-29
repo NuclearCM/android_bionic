@@ -33,14 +33,16 @@ void BM_string_memcmp::Run(int iters, int nbytes) {
   char* src = new char[nbytes]; char* dst = new char[nbytes];
   memset(src, 'x', nbytes);
   memset(dst, 'x', nbytes);
-  StartBenchmarkTiming();
 
   volatile int c __attribute__((unused)) = 0;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     c += memcmp(dst, src, nbytes);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
   SetBenchmarkBytesProcessed(uint64_t(iters) * uint64_t(nbytes));
   delete[] src;
   delete[] dst;
@@ -51,13 +53,15 @@ void BM_string_memcpy::Run(int iters, int nbytes) {
   StopBenchmarkTiming();
   char* src = new char[nbytes]; char* dst = new char[nbytes];
   memset(src, 'x', nbytes);
-  StartBenchmarkTiming();
 
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     memcpy(dst, src, nbytes);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
   SetBenchmarkBytesProcessed(uint64_t(iters) * uint64_t(nbytes));
   delete[] src;
   delete[] dst;
@@ -68,13 +72,15 @@ void BM_string_memmove::Run(int iters, int nbytes) {
   StopBenchmarkTiming();
   char* buf = new char[nbytes + 64];
   memset(buf, 'x', nbytes + 64);
-  StartBenchmarkTiming();
 
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     memmove(buf, buf + 1, nbytes); // Worst-case overlap.
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
   SetBenchmarkBytesProcessed(uint64_t(iters) * uint64_t(nbytes));
   delete[] buf;
 }
@@ -83,13 +89,15 @@ BENCHMARK_WITH_ARG(BM_string_memset, int)->AT_COMMON_SIZES;
 void BM_string_memset::Run(int iters, int nbytes) {
   StopBenchmarkTiming();
   char* dst = new char[nbytes];
-  StartBenchmarkTiming();
 
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     memset(dst, 0, nbytes);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
   SetBenchmarkBytesProcessed(uint64_t(iters) * uint64_t(nbytes));
   delete[] dst;
 }
@@ -100,14 +108,16 @@ void BM_string_strlen::Run(int iters, int nbytes) {
   char* s = new char[nbytes];
   memset(s, 'x', nbytes);
   s[nbytes - 1] = 0;
-  StartBenchmarkTiming();
 
   volatile int c __attribute__((unused)) = 0;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     c += strlen(s);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
   SetBenchmarkBytesProcessed(uint64_t(iters) * uint64_t(nbytes));
   delete[] s;
 }

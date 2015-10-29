@@ -22,59 +22,69 @@
 
 BENCHMARK_NO_ARG(BM_time_clock_gettime);
 void BM_time_clock_gettime::Run(int iters) {
-  StartBenchmarkTiming();
 
   timespec t;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     clock_gettime(CLOCK_MONOTONIC, &t);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_NO_ARG(BM_time_clock_gettime_syscall);
 void BM_time_clock_gettime_syscall::Run(int iters) {
-  StartBenchmarkTiming();
 
   timespec t;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     syscall(__NR_clock_gettime, CLOCK_MONOTONIC, &t);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_NO_ARG(BM_time_gettimeofday);
 void BM_time_gettimeofday::Run(int iters) {
-  StartBenchmarkTiming();
 
   timeval tv;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     gettimeofday(&tv, NULL);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_NO_ARG(BM_time_gettimeofday_syscall);
 void BM_time_gettimeofday_syscall::Run(int iters) {
-  StartBenchmarkTiming();
 
   timeval tv;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     syscall(__NR_gettimeofday, &tv, NULL);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_NO_ARG(BM_time_time);
 void BM_time_time::Run(int iters) {
-  StartBenchmarkTiming();
 
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     time(NULL);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }

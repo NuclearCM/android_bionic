@@ -20,6 +20,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 
 #include <string>
 #include <vector>
@@ -84,6 +85,27 @@ bool BenchmarkT<T>::ShouldRun(std::vector<regex_t*>& regs, T arg) {
   return false;
 }
 
+void Benchmark::StopBenchmarkTimingWithStd() {
+  if (start_time_ns_ != 0) {
+	uint64_t interval = NanoTime() - start_time_ns_;
+	each_time_ns_[count] = interval;
+	total_time_ns_ += interval;
+	count++;
+  }
+  start_time_ns_ = 0;
+}
+
+void Benchmark::StopBenchmarkTimingWithStdArg(int iters) {
+  if (start_time_ns_ != 0) {
+    double interval = NanoTime() - start_time_ns_;
+    each_time_ns_[count] = interval/(double)iters;
+    total_time_ns_ += interval/(double)iters;
+    count ++;
+  }
+  start_time_ns_ = 0;
+}
+
+
 void Benchmark::StopBenchmarkTiming() {
   if (start_time_ns_ != 0) {
     total_time_ns_ += NanoTime() - start_time_ns_;
@@ -95,6 +117,38 @@ void Benchmark::StartBenchmarkTiming() {
   if (start_time_ns_ == 0) {
     start_time_ns_ = NanoTime();
   }
+}
+
+/* Calculate Standard Diviation */
+void Benchmark::Standard() {
+    int i;
+    double average = 0, standard = 0, sigma = 0, value = 0;
+    average = total_time_ns_/Iterations;
+
+    for(i = 0 ; i < Iterations ; i++) {
+        standard = each_time_ns_[i] - average;
+        standard *= standard;
+        sigma += standard;
+    }
+    sigma /= Iterations;
+    value = sqrt(sigma);
+    Confidence(average, value);
+}
+
+/* Take the value between 95% confidence level. */
+void Benchmark::Confidence(double average, double value) {
+    int i;
+    int64_t max = average + 2*value;
+    int64_t min = average - 2*value;
+
+    total_time_ns_ = 0;
+	con_iterations = 0;
+    for(i = 0 ; i<Iterations ; i++) {
+        if(each_time_ns_[i]<max && each_time_ns_[i]>min) {
+            total_time_ns_ += (uint64_t)each_time_ns_[i];
+            con_iterations++;
+        }
+    }
 }
 
 std::string BenchmarkWithoutArg::GetNameStr(void*) {
@@ -121,7 +175,13 @@ void BenchmarkT<T>::RunWithArg(T arg) {
     start_time_ns_ = 0;
 
     iterations = new_iterations;
+
+	count = 0;
+	/* new array to store each time */
+	each_time_ns_ = new double[iterations];
     RunIterations(iterations, arg);
+	Iterations = iterations;
+
     if (total_time_ns_ >= 1e9) {
       break;
     }
@@ -135,7 +195,15 @@ void BenchmarkT<T>::RunWithArg(T arg) {
                           std::min(new_iterations + new_iterations/2, 100*iterations));
 
     new_iterations = Round(new_iterations);
+
+	total_time_ns_ = 0;
   }
+	
+	/* calculate Standard deviation */
+	Standard();
+
+	iterations = con_iterations;
+	delete each_time_ns_;
 
   printf("%-*s %10s %10" PRId64, MaxNameColumnWidth(), GetNameStr(arg).c_str(),
          PrettyInt(iterations, 10).c_str(), total_time_ns_/iterations);

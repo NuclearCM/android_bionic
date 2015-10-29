@@ -38,7 +38,11 @@ public:
 
   void SetBenchmarkBytesProcessed(uint64_t bytes) { bytes_processed_ += bytes; }
   void StopBenchmarkTiming();
+  void StopBenchmarkTimingWithStd();
+  void StopBenchmarkTimingWithStdArg(int);
   void StartBenchmarkTiming();
+  void Standard();
+  void Confidence(double, double);
 
   // Run all of the benchmarks that have registered.
   static size_t RunAll(std::vector<regex_t*>&);
@@ -53,6 +57,10 @@ protected:
   uint64_t bytes_processed_;
   uint64_t total_time_ns_;
   uint64_t start_time_ns_;
+  double *each_time_ns_;
+  int Iterations;
+  uint64_t count = 0;
+  uint64_t con_iterations = 0;
 
   static bool header_printed_;
 

@@ -72,6 +72,7 @@ benchmark_src_files := \
     string_benchmark.cpp \
     time_benchmark.cpp \
     unistd_benchmark.cpp \
+	malloc_benchmark.cpp \
 
 # Build benchmarks for the device (with bionic's .so). Run with:
 #   adb shell bionic-benchmarks32
@@ -85,6 +86,7 @@ LOCAL_CFLAGS := $(benchmark_cflags)
 LOCAL_CPPFLAGS := $(benchmark_cppflags)
 LOCAL_SRC_FILES := $(benchmark_src_files)
 LOCAL_STATIC_LIBRARIES := libbenchmark libbase
+LOCAL_FORCE_STATIC_EXECUTABLE := true
 include $(BUILD_EXECUTABLE)
 
 # We don't build a static benchmark executable because it's not usually

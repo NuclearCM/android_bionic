@@ -26,14 +26,16 @@ void BM_semaphore_sem_getvalue::Run(int iters) {
   StopBenchmarkTiming();
   sem_t semaphore;
   sem_init(&semaphore, 1, 1);
-  StartBenchmarkTiming();
 
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     int dummy;
     sem_getvalue(&semaphore, &dummy);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_NO_ARG(BM_semaphore_sem_wait_sem_post);
@@ -41,14 +43,16 @@ void BM_semaphore_sem_wait_sem_post::Run(int iters) {
   StopBenchmarkTiming();
   sem_t semaphore;
   sem_init(&semaphore, 1, 1);
-  StartBenchmarkTiming();
 
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     sem_wait(&semaphore);
     sem_post(&semaphore);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 /*
@@ -126,8 +130,10 @@ void BM_semaphore_sem_post::Run(int iters) {
     param.sched_priority = 1;
     sched_setscheduler((pid_t)0, SCHED_FIFO, &param);
     StartBenchmarkTiming();
+
     sem_post(&semaphore);
-    StopBenchmarkTiming(); // Remember to subtract clock syscall overhead
+
+    StopBenchmarkTimingWithStd(); // Remember to subtract clock syscall overhead
     param.sched_priority = 0;
     sched_setscheduler((pid_t)0, SCHED_IDLE, &param);
   }

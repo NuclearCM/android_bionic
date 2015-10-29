@@ -32,17 +32,19 @@ void ReadWriteTest(::testing::Benchmark* benchmark, int iters, int chunk_size, F
   FILE* fp = fopen("/dev/zero", "rw");
   __fsetlocking(fp, FSETLOCKING_BYCALLER);
   char* buf = new char[chunk_size];
-  benchmark->StartBenchmarkTiming();
 
   if (!buffered) {
     setvbuf(fp, 0, _IONBF, 0);
   }
 
   for (int i = 0; i < iters; ++i) {
+  	benchmark->StartBenchmarkTiming();
+
     f(buf, chunk_size, 1, fp);
+
+  	benchmark->StopBenchmarkTimingWithStd();
   }
 
-  benchmark->StopBenchmarkTiming();
   benchmark->SetBenchmarkBytesProcessed(int64_t(iters) * int64_t(chunk_size));
   delete[] buf;
   fclose(fp);
@@ -68,26 +70,26 @@ void BM_stdio_fwrite_unbuffered::Run(int iters, int chunk_size) {
   ReadWriteTest(this, iters, chunk_size, fwrite, false);
 }
 
-static void FopenFgetsFclose(int iters, bool no_locking) {
+static void FopenFgetsFclose(::testing::Benchmark* benchmark, int iters, bool no_locking) {
   char buf[1024];
   for (int i = 0; i < iters; ++i) {
+  	benchmark->StartBenchmarkTiming();
+
     FILE* fp = fopen("/proc/version", "re");
     if (no_locking) __fsetlocking(fp, FSETLOCKING_BYCALLER);
     fgets(buf, sizeof(buf), fp);
     fclose(fp);
+
+  	benchmark->StopBenchmarkTimingWithStd();
   }
 }
 
 BENCHMARK_NO_ARG(BM_stdio_fopen_fgets_fclose_locking);
 void BM_stdio_fopen_fgets_fclose_locking::Run(int iters) {
-  StartBenchmarkTiming();
-  FopenFgetsFclose(iters, false);
-  StopBenchmarkTiming();
+  FopenFgetsFclose(this, iters, false);
 }
 
 BENCHMARK_NO_ARG(BM_stdio_fopen_fgets_fclose_no_locking);
 void BM_stdio_fopen_fgets_fclose_no_locking::Run(int iters) {
-  StartBenchmarkTiming();
-  FopenFgetsFclose(iters, true);
-  StopBenchmarkTiming();
+  FopenFgetsFclose(this, iters, true);
 }

@@ -28,54 +28,62 @@ volatile double v;
 
 BENCHMARK_NO_ARG(BM_math_sqrt);
 void BM_math_sqrt::Run(int iters) {
-  StartBenchmarkTiming();
 
   d = 0.0;
   v = 2.0;
   for (int i = 0; i < iters; ++i) {
+	StartBenchmarkTiming();
+
     d += sqrt(v);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_NO_ARG(BM_math_log10);
 void BM_math_log10::Run(int iters) {
-  StartBenchmarkTiming();
 
   d = 0.0;
   v = 1234.0;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     d += log10(v);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_NO_ARG(BM_math_logb);
 void BM_math_logb::Run(int iters) {
-  StartBenchmarkTiming();
 
   d = 0.0;
   v = 1234.0;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     d += logb(v);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_WITH_ARG(BM_math_isfinite_macro, double)->AT_COMMON_VALS;
 void BM_math_isfinite_macro::Run(int iters, double value) {
-  StartBenchmarkTiming();
 
   d = 0.0;
   v = value;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     d += isfinite(v);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 #if defined(__BIONIC__)
@@ -85,202 +93,232 @@ void BM_math_isfinite_macro::Run(int iters, double value) {
 #endif
 BENCHMARK_WITH_ARG(BM_math_isfinite, double)->AT_COMMON_VALS;
 void BM_math_isfinite::Run(int iters, double value) {
-  StartBenchmarkTiming();
 
   d = 0.0;
   v = value;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     d += test_isfinite(v);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_WITH_ARG(BM_math_isinf_macro, double)->AT_COMMON_VALS;
 void BM_math_isinf_macro::Run(int iters, double value) {
-  StartBenchmarkTiming();
 
   d = 0.0;
   v = value;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     d += isinf(v);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_WITH_ARG(BM_math_isinf, double)->AT_COMMON_VALS;
 void BM_math_isinf::Run(int iters, double value) {
-  StartBenchmarkTiming();
 
   d = 0.0;
   v = value;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     d += (isinf)(v);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_WITH_ARG(BM_math_isnan_macro, double)->AT_COMMON_VALS;
 void BM_math_isnan_macro::Run(int iters, double value) {
-  StartBenchmarkTiming();
 
   d = 0.0;
   v = value;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     d += isnan(v);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_WITH_ARG(BM_math_isnan, double)->AT_COMMON_VALS;
 void BM_math_isnan::Run(int iters, double value) {
-  StartBenchmarkTiming();
 
   d = 0.0;
   v = value;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     d += (isnan)(v);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_WITH_ARG(BM_math_isnormal_macro, double)->AT_COMMON_VALS;
 void BM_math_isnormal_macro::Run(int iters, double value) {
-  StartBenchmarkTiming();
 
   d = 0.0;
   v = value;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     d += isnormal(v);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 #if defined(__BIONIC__)
 BENCHMARK_WITH_ARG(BM_math_isnormal, double)->AT_COMMON_VALS;
 void BM_math_isnormal::Run(int iters, double value) {
-  StartBenchmarkTiming();
 
   d = 0.0;
   v = value;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     d += (__isnormal)(v);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 #endif
 
 BENCHMARK_NO_ARG(BM_math_sin_fast);
 void BM_math_sin_fast::Run(int iters) {
-  StartBenchmarkTiming();
 
   d = 1.0;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     d += sin(d);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_NO_ARG(BM_math_sin_feupdateenv);
 void BM_math_sin_feupdateenv::Run(int iters) {
-  StartBenchmarkTiming();
 
   d = 1.0;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     fenv_t __libc_save_rm;
     feholdexcept(&__libc_save_rm);
     fesetround(FE_TONEAREST);
     d += sin(d);
     feupdateenv(&__libc_save_rm);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_NO_ARG(BM_math_sin_fesetenv);
 void BM_math_sin_fesetenv::Run(int iters) {
-  StartBenchmarkTiming();
 
   d = 1.0;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     fenv_t __libc_save_rm;
     feholdexcept(&__libc_save_rm);
     fesetround(FE_TONEAREST);
     d += sin(d);
     fesetenv(&__libc_save_rm);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_WITH_ARG(BM_math_fpclassify, double)->AT_COMMON_VALS;
 void BM_math_fpclassify::Run(int iters, double value) {
-  StartBenchmarkTiming();
 
   d = 0.0;
   v = value;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     d += fpclassify(v);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_WITH_ARG(BM_math_signbit_macro, double)->AT_COMMON_VALS;
 void BM_math_signbit_macro::Run(int iters, double value) {
-  StartBenchmarkTiming();
 
   d = 0.0;
   v = value;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     d += signbit(v);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_WITH_ARG(BM_math_signbit, double)->AT_COMMON_VALS;
 void BM_math_signbit::Run(int iters, double value) {
-  StartBenchmarkTiming();
 
   d = 0.0;
   v = value;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     d += (__signbit)(v);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_WITH_ARG(BM_math_fabs_macro, double)->AT_COMMON_VALS;
 void BM_math_fabs_macro::Run(int iters, double value) {
-  StartBenchmarkTiming();
 
   d = 0.0;
   v = value;
   for (int i = 0; i < iters; ++i) {
-    d += fabs(v);
+ 	StartBenchmarkTiming();
+
+	d += fabs(v);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_WITH_ARG(BM_math_fabs, double)->AT_COMMON_VALS;
 void BM_math_fabs::Run(int iters, double value) {
-  StartBenchmarkTiming();
 
   d = 0.0;
   v = value;
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     d += (fabs)(v);
+
+	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }

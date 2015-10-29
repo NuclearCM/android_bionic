@@ -21,24 +21,28 @@
 
 BENCHMARK_NO_ARG(BM_unistd_getpid);
 void BM_unistd_getpid::Run(int iters) {
-  StartBenchmarkTiming();
 
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     getpid();
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 BENCHMARK_NO_ARG(BM_unistd_getpid_syscall);
 void BM_unistd_getpid_syscall::Run(int iters) {
-  StartBenchmarkTiming();
 
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     syscall(__NR_getpid);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 #if defined(__BIONIC__)
@@ -48,24 +52,28 @@ void BM_unistd_getpid_syscall::Run(int iters) {
 
 BENCHMARK_NO_ARG(BM_unistd_gettid);
 void BM_unistd_gettid::Run(int iters) {
-  StartBenchmarkTiming();
 
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     gettid_fp();
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
 
 #endif
 
 BENCHMARK_NO_ARG(BM_unistd_gettid_syscall);
 void BM_unistd_gettid_syscall::Run(int iters) {
-  StartBenchmarkTiming();
 
   for (int i = 0; i < iters; ++i) {
+  	StartBenchmarkTiming();
+
     syscall(__NR_gettid);
+
+  	StopBenchmarkTimingWithStd();
   }
 
-  StopBenchmarkTiming();
 }
