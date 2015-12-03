@@ -123,7 +123,7 @@ void BM_string_strlen::Run(int iters, int nbytes) {
 }
 
 
-
+BENCHMARK_WITH_ARG(BM_string_strrchr)->AT_COMMON_SIZES;
 static void BM_string_strrchr(int iters, int nbytes) {
   StopBenchmarkTiming();
   char* s = new char[nbytes];
@@ -143,8 +143,8 @@ static void BM_string_strrchr(int iters, int nbytes) {
   SetBenchmarkBytesProcessed(int64_t(iters) * int64_t(nbytes));
   delete[] s;
 }
-BENCHMARK(BM_string_strrchr)->AT_COMMON_SIZES;
 
+BENCHMARK_WITH_ARG(BM_string_strcmp)->AT_COMMON_SIZES;
 static void BM_string_strcmp(int iters, int nbytes) {
   StopBenchmarkTiming();
   char* src = new char[nbytes]; char* dst = new char[nbytes];
@@ -164,8 +164,8 @@ static void BM_string_strcmp(int iters, int nbytes) {
   delete[] src;
   delete[] dst;
 }
-BENCHMARK(BM_string_strcmp)->AT_COMMON_SIZES;
 
+BENCHMARK_WITH_ARG(BM_string_strncmp)->AT_COMMON_SIZES;
 static void BM_string_strncmp(int iters, int nbytes) {
   StopBenchmarkTiming();
   char* src = new char[nbytes]; char* dst = new char[nbytes];
@@ -185,8 +185,8 @@ static void BM_string_strncmp(int iters, int nbytes) {
   delete[] src;
   delete[] dst;
 }
-BENCHMARK(BM_string_strncmp)->AT_COMMON_SIZES;
 
+BENCHMARK_WITH_ARG(BM_string_memchr)->AT_COMMON_SIZES;
 static void BM_string_memchr(int iters, int nbytes) {
   StopBenchmarkTiming();
   char* s = new char[nbytes];
@@ -206,8 +206,8 @@ static void BM_string_memchr(int iters, int nbytes) {
   SetBenchmarkBytesProcessed(int64_t(iters) * int64_t(nbytes));
   delete[] s;
 }
-BENCHMARK(BM_string_memchr)->AT_COMMON_SIZES;
 
+BENCHMARK_WITH_ARG(BM_string_memrchr)->AT_COMMON_SIZES;
 static void BM_string_memrchr(int iters, int nbytes) {
   StopBenchmarkTiming();
   char* s = new char[nbytes];
@@ -227,8 +227,8 @@ static void BM_string_memrchr(int iters, int nbytes) {
   SetBenchmarkBytesProcessed(int64_t(iters) * int64_t(nbytes));
   delete[] s;
 }
-BENCHMARK(BM_string_memrchr)->AT_COMMON_SIZES;
 
+BENCHMARK_WITH_ARG(BM_string_strchr)->AT_COMMON_SIZES;
 static void BM_string_strchr(int iters, int nbytes) {
   StopBenchmarkTiming();
   char* s = new char[nbytes];
@@ -248,4 +248,3 @@ static void BM_string_strchr(int iters, int nbytes) {
   SetBenchmarkBytesProcessed(int64_t(iters) * int64_t(nbytes));
   delete[] s;
 }
-BENCHMARK(BM_string_strchr)->AT_COMMON_SIZES;
